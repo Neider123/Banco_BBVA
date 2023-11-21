@@ -74,7 +74,9 @@ public class BillDao {
 				Date date_bill = rs.getDate("date_bill");
 				Integer user_id = rs.getInt("user_id");
 				Integer value  = rs.getInt("value");
-				bills.add(new Bill(id,date_bill,user_id,value));
+				Integer type = rs.getInt("type");
+				String observation = rs.getString("observation");
+				bills.add(new Bill(id,date_bill,user_id,value,type,observation));
 			}
 
 		}catch(SQLException e) {
@@ -84,24 +86,26 @@ public class BillDao {
 		
 	}
 	
-	public User select(int id){
-		User usuario = null;
-		List <User> usuarios = new ArrayList<>();
+	public Bill select(int id){
+		Bill bill = null;
+		List <Bill> bills = new ArrayList<>();
 		try {
 			PreparedStatement preparedStatement = (PreparedStatement) conexion.setPreparedStatement(SELECT_BILL_BY_ID);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = conexion.query();
 			while(rs.next()) {
-				String username = rs.getString("username");
-				String pass = rs.getString("pass");
-				String email = rs.getString("email");
-				usuario = (new User(id,username,pass,email));
+				Date date_bill = rs.getDate("date_bill");
+				Integer user_id = rs.getInt("user_id");
+				Integer value  = rs.getInt("value");
+				Integer type = rs.getInt("type");
+				String observation = rs.getString("observation");
+				bill = (new Bill(date_bill,user_id,value,type,observation));
 			}
 
 		}catch(SQLException e) {
 			
 		}
-		return usuario;
+		return bill;
 		
 	}
 
